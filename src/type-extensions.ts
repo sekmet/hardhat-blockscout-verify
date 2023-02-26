@@ -18,6 +18,7 @@ declare module "hardhat/types/config" {
   export interface BlockscoutVerifyConfig {
     blockscoutURL: string;
     contracts: BlockscoutVerifyContract;
+    config: BlockscoutVerifyContractConfig;
   }
 
   export interface BlockscoutVerifyContract {

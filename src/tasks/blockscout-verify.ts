@@ -8,6 +8,25 @@ import {
 import fetch from "node-fetch";
 import path from "path";
 
+function r(e:string) {
+  var t:any = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+  };
+  return e.replace(/[&<>"']/g, (function(e:string) {
+      return t[e]
+  }
+  ))
+}
+
+function transformContent(content:string) {
+  // Replace all occurrences of "foo" with "bar"
+  return r(`${content}`);
+}
+
 task("blockscout-verify")
   .addPositionalParam("filePath", "File path to the contract", "", types.string)
   .addPositionalParam("address", "Deployed contract address", "", types.string)
@@ -21,10 +40,11 @@ task("blockscout-verify")
         "Missing args for this task"
       );
     }
-    const fileName = args.filePath;
+    const fileName = `${args.filePath}`.split(':')[0];
     const address = args.address;
+    const constructorArguments = args.constructorArguments;
     const contractName = path.basename(fileName, ".sol");
-    if (!validateContractName(hre.config, contractName)) {
+    if (!validateContractName(hre.config, contractName) && !hre.config.blockscoutVerify!.config) {
       throw new NomicLabsHardhatPluginError(
         "hardhat-blockscout-verify",
         "Contracts is not defined in Hardhat config"
@@ -41,14 +61,17 @@ task("blockscout-verify")
       files: [fileName],
     });
     console.log("File flatten has completed");
-    const verifyConfig = hre.config.blockscoutVerify!.contracts[contractName];
+    const verifyConfig = hre.config.blockscoutVerify!.config
+      ? hre.config.blockscoutVerify!.config
+      : hre.config.blockscoutVerify!.contracts[contractName];
     const params: any = {
       addressHash: address,
       name: contractName,
       compilerVersion: verifyConfig!.compilerVersion,
       optimization: verifyConfig!.optimization,
-      contractSourceCode: flattenContent,
-      autodetectConstructorArguments: "true",
+      contractSourceCode: transformContent(flattenContent),
+      constructorArguments: constructorArguments,
+      autodetectConstructorArguments: constructorArguments ? "false" : "true",
       evmVersion: verifyConfig!.evmVersion,
       optimizationRuns: verifyConfig!.optimizationRuns,
     };
@@ -87,26 +110,27 @@ task("blockscout-verify")
           } else {
             throw new NomicLabsHardhatPluginError(
               "hardhat-blockscout-verify",
-              "Fail to verify contract"
+              "[524] Fail to verify contract - NO ABI"
             );
           }
         } else {
           throw new NomicLabsHardhatPluginError(
             "hardhat-blockscout-verify",
-            "Fail to verify contract"
+            "[524] Fail to verify contract - NOT FOUND"
           );
         }
       } else {
         throw new NomicLabsHardhatPluginError(
           "hardhat-blockscout-verify",
-          "Fail to verify contract"
+          `Fail to verify contract - OTHER ERROR :( [ ${JSON.stringify(verifyRes)} ]`
         );
+
       }
-    } catch (e) {
+    } catch (e:any) {
       clearInterval(loader);
       throw new NomicLabsHardhatPluginError(
         "hardhat-blockscout-verify",
-        "Fail to verify contract"
+        e
       );
     }
   });

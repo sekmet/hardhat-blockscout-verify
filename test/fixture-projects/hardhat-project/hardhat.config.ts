@@ -9,6 +9,12 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   blockscoutVerify: {
     blockscoutURL: "",
+    config: {
+      compilerVersion: SOLIDITY_VERSION.SOLIDITY_V_6_12,
+      optimization: true,
+      evmVersion: EVM_VERSION.EVM_ISTANBUL,
+      optimizationRuns: 999999,
+    },
     contracts: {
       ERC20Mock: {
         compilerVersion: SOLIDITY_VERSION.SOLIDITY_V_6_12,
