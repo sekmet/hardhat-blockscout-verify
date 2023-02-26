@@ -42,6 +42,12 @@ This is an example of how to set it:
 module.exports = {
   blockscoutVerify: {
     blockscoutURL: "<BLOCKSCOUT_EXPLORER_URL>",
+    config: {
+        compilerVersion: SOLIDITY_VERSION.<CONTRACT_COMPILER_VERSION>, // checkout enum SOLIDITY_VERSION
+        optimization: true,
+        evmVersion: EVM_VERSION.<EVM_VERSION>, // checkout enum SOLIDITY_VERSION
+        optimizationRuns: 999999,
+    },
     contracts: {
       "<CONTRACT_NAME>": {
         compilerVersion: SOLIDITY_VERSION.<CONTRACT_COMPILER_VERSION>, // checkout enum SOLIDITY_VERSION
@@ -72,7 +78,8 @@ Example:
 ```js
 await hre.run("blockscout-verify", {
     filePath: "<contract file path>",
-    address: "<contract address>"
+    address: "<contract address>",
+    constructorArguments: "<constructor arguments>", //if any 
 })
 ```
 

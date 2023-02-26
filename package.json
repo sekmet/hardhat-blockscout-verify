@@ -1,9 +1,9 @@
 {
   "name": "@sekmet/hardhat-blockscout-verify",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Hardhat plugin for solidity contract verification on Blockscout block explorer",
   "repository": "https://github.com/sekmet/hardhat-blockscout-verify.git",
-  "author": "ericxstone",
+  "authors": ["ericxstone","sekmet"],
   "license": "MIT",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

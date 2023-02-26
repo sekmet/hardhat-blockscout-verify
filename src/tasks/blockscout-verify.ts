@@ -30,6 +30,7 @@ function transformContent(content:string) {
 task("blockscout-verify")
   .addPositionalParam("filePath", "File path to the contract", "", types.string)
   .addPositionalParam("address", "Deployed contract address", "", types.string)
+  .addPositionalParam("constructorArguments", "Contract constructor arguments", "", types.string)
   .setAction(async function (
     args: TaskArguments,
     hre: HardhatRuntimeEnvironment
