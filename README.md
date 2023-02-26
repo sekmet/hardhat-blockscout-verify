@@ -9,20 +9,20 @@ This plugin will help you to verify your solidity contract on Blockscout block e
 ## Installation
 
 ```bash
-npm install @ericxstone/hardhat-blockscout-verify
+npm install @sekmet/hardhat-blockscout-verify
 ```
 
 Import the plugin in your `hardhat.config.js`:
 
 ```js
-require("@ericxstone/hardhat-blockscout-verify");
+require("@sekmet/hardhat-blockscout-verify");
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
-import "@ericxstone/hardhat-blockscout-verify";
-import {SOLIDITY_VERSION, EVM_VERSION} from "@ericxstone/hardhat-blockscout-verify";
+import "@sekmet/hardhat-blockscout-verify";
+import {SOLIDITY_VERSION, EVM_VERSION} from "@sekmet/hardhat-blockscout-verify";
 ```
 
 ## Tasks
